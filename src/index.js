@@ -1,6 +1,8 @@
 
 import './style.css';
-import Poly from './objs/Poly';
+import { Poly2D, Poly3D } from './objs/Poly';
+
+import diamond from './data/diamond.xyz'
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -41,8 +43,10 @@ function drawStuff() {
     isFilled: true
   };
   let vertices = [[100,100], [500,100], [500,500], [300, 300], [100,500]];
-  const poly = new Poly(vertices, opts);
+  let poly = new Poly2D(vertices, opts);
   poly.draw(ctx);
+
+  window.diamond = diamond
 }
 
 init();
