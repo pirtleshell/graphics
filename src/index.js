@@ -1,29 +1,18 @@
+'use strict';
 
-import './style.css';
 import { Poly2D, Poly3D } from './objs/Poly';
+import World from './objs/World';
 
 import diamond from './data/diamond.xyz'
-
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
+import './style.css';
 
 function init() {
-  window.addEventListener('resize', resizeCanvas, false);
-  resizeCanvas();
+  const body = document.querySelector('body')
+  const world = new World(body, drawStuff);
+  world.init();
 }
 
-function resizeCanvas(event) {
-  canvas.height = window.innerHeight;
-  canvas.width = window.innerWidth;
-  clear();
-  drawStuff();
-}
-
-function clear() {
-  ctx.clearRect(0, 0, canvas.height, canvas.width);
-}
-
-function drawStuff() {
+function drawStuff(ctx) {
   ctx.fillStyle = 'purple';
   let gradient = ctx.createLinearGradient(0, 10, 0, 50);
   gradient.addColorStop(0, '#000');
@@ -33,7 +22,7 @@ function drawStuff() {
   ctx.fillText('Doing some graphics!', 10, 50);
   ctx.strokeText('Doing some graphics!', 10, 50);
 
-  gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+  gradient = ctx.createLinearGradient(0, 0, ctx.canvas.width, 0);
   gradient.addColorStop(0, '#000');
   gradient.addColorStop(0.5, 'purple');
   gradient.addColorStop(1, '#fff');
@@ -49,4 +38,4 @@ function drawStuff() {
   window.diamond = diamond
 }
 
-init();
+window.onload = init;
