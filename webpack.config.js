@@ -31,6 +31,14 @@ module.exports = {
         }
       },
 
+      // custom polygons
+      {
+        test: /\.xyz$/,
+        use: {
+          loader: './polyLoader'
+        }
+      },
+
       // CSS
       {
         test: /\.css$/,
