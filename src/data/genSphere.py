@@ -10,7 +10,8 @@ def make_sphere(center, radius, tsteps=20, psteps=15, plotting=False):
     x = lambda t, a: radius * np.cos(t) * np.sin(a) + center[0]
     y = lambda t, a: radius * np.sin(t) * np.sin(a) + center[1]
     z = lambda t, a: radius * np.cos(a) + center[2]
-    createPoint = lambda t, a: tuple(np.round((x(t,a), y(t,a), z(t, a)), 2))
+    # computer canvas has z going into the screen, swap y & z
+    createPoint = lambda t, a: tuple(np.round((x(t,a), z(t,a), y(t,a)), 2))
 
     trange = np.linspace(0, 2*np.pi, tsteps)
     prange = np.linspace(0, np.pi, psteps)
@@ -60,10 +61,10 @@ def make_sphere(center, radius, tsteps=20, psteps=15, plotting=False):
     if plotting:
         fig = plt.figure()
         ax = Axes3D(fig)
-        limits = lambda c: np.array([-radius*1.1 - c, radius*1.1 + c])
-        ax.set_xlim(limits(center[0]))
-        ax.set_ylim(limits(center[1]))
-        ax.set_zlim(limits(center[2]))
+        limits = np.array([-radius*1.1 - np.max(center), radius*1.1 + np.max(center)])
+        ax.set_xlim(limits)
+        ax.set_ylim(limits)
+        ax.set_zlim(limits)
         for poly in polys:
             verts = [[points[i] for i in poly]]
             ax.add_collection3d(Line3DCollection(verts))

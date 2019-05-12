@@ -1,7 +1,7 @@
 
 const defaultOptions = {
   color: '#000',
-  isFilled: false,
+  isFilled: false
 };
 
 class Poly {
@@ -16,7 +16,22 @@ class Poly {
   get color() { return this.options.color; }
   set color(color) { this.options.color = color; }
   get numPoints() { return this.vertices.length; }
+
+  beforeDraw(ctx) {
+    if(this.options.isFilled)
+      ctx.fillStyle = this.options.color;
+    else
+      ctx.strokeStyle = this.options.color;
+  }
+
+  finishDraw(ctx) {
+    if (this.options.isFilled)
+      ctx.fill();
+    else
+      ctx.stroke();
+  }
 }
+
 
 class Poly2D extends Poly {
   constructor(vertices, options) {
@@ -25,10 +40,7 @@ class Poly2D extends Poly {
   }
 
   draw(ctx) {
-    if(this.options.isFilled)
-      ctx.fillStyle = this.options.color;
-    else
-      ctx.strokeStyle = this.options.color;
+    this.beforeDraw(ctx);
 
     ctx.beginPath();
     ctx.moveTo(this.vertices[0][0], this.vertices[0][1]);
@@ -37,18 +49,16 @@ class Poly2D extends Poly {
     });
     ctx.closePath();
 
-    if (this.options.isFilled)
-      ctx.fill();
-    else
-      ctx.stroke();
+    this.finishDraw(ctx);
   }
 }
+
 
 class Poly3D extends Poly {
   constructor(vertices, options) {
     super(vertices, options);
 
-    this.fov = Math.PI / 4.0
+    this.fov = Math.tan(Math.PI / 4);
 
     this.draw = this.draw.bind(this);
     this.project3d = this.project3d.bind(this);
@@ -61,9 +71,14 @@ class Poly3D extends Poly {
   }
 
   project3d(point, ctx) {
-    const canvasWidth = ctx.canvas.width;
-    const canvasHeight = ctx.canvas.height;
-    // linear alebra goes here
+    const maxX = ctx.canvas.width / 2;
+    const maxY = ctx.canvas.height / 2;
+    let scale = Math.min(maxX, maxY);
+
+    const px = (scale / this.fov) * point[0]/point[2] + maxX;
+    const py = (scale / this.fov) * point[1]/point[2] + maxY;
+
+    return [px, py];
   }
 }
 
