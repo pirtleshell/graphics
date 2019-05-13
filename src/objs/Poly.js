@@ -1,4 +1,7 @@
 
+import Matrix from './Matrix';
+const matrix = new Matrix();
+
 const defaultOptions = {
   color: '#000',
   isFilled: false
@@ -65,7 +68,22 @@ class Poly3D extends Poly {
   }
 
   draw(ctx) {
-    const projected = this.vertices.map(vertex => this.project3d(vertex, ctx));
+    // 15 deg
+    // let cs = 0.9659258;
+    // let sn = 0.2588190;
+    let [cs, sn] = [0.1, 0.9]
+    let move = matrix.identity();
+    let inv = matrix.identity();
+    [move, inv] = matrix.rotateX(move, inv, cs, sn);
+    // [move, inv] = matrix.rotateY(move, inv, cs, sn);
+    [move, inv] = matrix.translate(move, inv, 0, 0, 60);
+    let points = matrix.multiplyPoints(move, this.vertices);
+    console.log('vertices', this.vertices)
+    console.log('points', points)
+
+    let projected = points.map(vertex => this.project3d(vertex, ctx));
+    console.log('projected', projected)
+
     const poly2d = new Poly2D(projected);
     poly2d.draw(ctx)
   }

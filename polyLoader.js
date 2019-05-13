@@ -13,9 +13,6 @@ function readPolys(content) {
   for (let i = 0; i < numPoints; i++) {
     let vertex = lines[i + 1];
     vertices.push(vertex.split(',').map(parseFloat));
-
-    // DEBUG: manually translating points down z axis
-    vertices[i][2] += 30;
   }
 
   const numFaces = parseInt(lines[numPoints + 1]);
