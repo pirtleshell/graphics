@@ -6,6 +6,7 @@ import World from './objs/World';
 
 import diamond from './data/diamond.xyz';
 import sphere from './data/sphere.xyz';
+import torus from './data/torus.xyz';
 import './style.css';
 
 function init() {
@@ -15,21 +16,29 @@ function init() {
 
   setupObjects(world);
 
-  world.draw();
+  // world.draw();
+  world.animate(360*3);
 }
 
 function setupObjects(world) {
-  const obj = new Shape(sphere);
+  // 1 deg
+  let cs1 = Math.cos(Math.PI / 180);
+  let sn1 = Math.sin(Math.PI / 180);
+  const rotate = new Movement().rotateY(cs1, sn1);
+  const animate = (o) => {
+    const trans = o.untranslate(1);
+    o.move(rotate);
+    o.move(trans);
+  };
 
-  const move = new Movement();
-  move.rotateX(0, 1);
-  // 15 deg
-  let cs15 = 0.9659258;
-  let sn15 = 0.2588190;
-  move.rotateY(cs15, sn15);
-  move.translateZ(60);
+  let obj; let move;
+
+  obj = new Shape(torus);
+  obj.onAnimate = animate;
+  move = new Movement();
+  move.scale(10, 10, 10);
+  move.translate(0, 0, 40);
   obj.move(move);
-
   world.add(obj);
 }
 

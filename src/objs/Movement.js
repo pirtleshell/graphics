@@ -29,11 +29,30 @@ class Movement {
   applyMatrix(move, inv) {
     this.move = this.multiply(move, this.move);
     this.inv = this.multiply(this.inv, inv);
+    return this;
+  }
+
+  applyMovement(movement) {
+    this.applyMatrix(movement.move, movement.inv);
+    return this;
+  }
+
+  invert() {
+    let move = this.move;
+    this.move = this.inv;
+    this.inv = move;
+    return this;
   }
 
   translate(dx, dy, dz) {
     let trans = this.identity();
     let transinv = this.identity();
+
+    if(Array.isArray(dx) && dx.length == 3) {
+      dy = dx[1];
+      dz = dx[2];
+      dx = dx[0];
+    }
 
     trans[0][3] = dx;
     trans[1][3] = dy;

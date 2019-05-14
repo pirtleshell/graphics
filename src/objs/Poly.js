@@ -87,7 +87,7 @@ class Poly3D extends Poly {
     let scale = Math.min(maxX, maxY);
 
     const px = (scale / this.fov) * point[0]/point[2] + maxX;
-    const py = (scale / this.fov) * point[1]/point[2] + maxY;
+    const py = (scale / this.fov) * -point[1]/point[2] + maxY;
 
     return [px, py];
   }
