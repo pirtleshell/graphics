@@ -38,23 +38,33 @@ class Shape {
     }
 
     this.moves.push(movement);
+    this.sortFaces();
   }
 
-  // sortFaces() {
-  //   const vertices = this.vertices;
-  //   const compare = (faceA, faceB) => {
-  //     const avgA = vertices[faceA].reduce((sum, v) => sum + v[2], 0) / 3;
-  //     const avgB = vertices[faceB].reduce((sum, v) => sum + v[2], 0) / 3;
-  //     if (avgA < avgB)
-  //       return -1;
-  //     else if (avgA == avgB)
-  //       return 0;
-  //     else
-  //       return 1;
-  //   };
-  //
-  //   this.faces.sort(compare);
-  // }
+  sortFaces() {
+    const vertices = this.vertices;
+    const getAvgZ = verts => {
+      let min = Infinity;
+      let max = -Infinity;
+      verts.forEach( v => {
+        if(vertices[v][2] < min) min = vertices[v][2];
+        if(vertices[v][2] > max) max = vertices[v][2];
+      });
+      return (min + max) / 2;
+    };
+    const compare = (faceA, faceB) => {
+      const avgA = getAvgZ(faceA);
+      const avgB = getAvgZ(faceB);
+      if (avgA < avgB)
+        return 1;
+      else if (avgA == avgB)
+        return 0;
+      else
+        return -1;
+    };
+
+    this.faces.sort(compare);
+  }
 }
 
 export default Shape;
