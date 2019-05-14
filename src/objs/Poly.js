@@ -1,10 +1,8 @@
 
-import Matrix from './Matrix';
-const matrix = new Matrix();
-
 const defaultOptions = {
   color: '#000',
-  isFilled: false
+  isFilled: false,
+  strokeColor: null,
 };
 
 class Poly {
@@ -17,21 +15,26 @@ class Poly {
   }
 
   get color() { return this.options.color; }
-  set color(color) { this.options.color = color; }
+  set color(c) { this.options.color = c;}
+  get strokeColor() { return this.options.strokeColor; }
+  set strokeColor(c) { this.options.strokeColor = c; }
+  get isFilled() { return this.options.isFilled; }
+  set isFilled(fill) { this.options.isFilled = fill; }
+
   get numPoints() { return this.vertices.length; }
-
-  beforeDraw(ctx) {
-
-  }
 
   finishDraw(ctx) {
     if (this.options.isFilled)
       ctx.fill();
+      if(this.options.strokeColor) {
+        ctx.strokeStyle = this.options.strokeColor;
+        ctx.stroke();
+      }
     else
       ctx.stroke();
   }
 
-  setStyle() {
+  setStyle(ctx) {
     if(this.options.isFilled)
       ctx.fillStyle = this.options.color;
     else
@@ -47,7 +50,7 @@ class Poly2D extends Poly {
   }
 
   draw(ctx) {
-    this.beforeDraw(ctx);
+    this.setStyle(ctx);
 
     ctx.beginPath();
     ctx.moveTo(this.vertices[0][0], this.vertices[0][1]);
@@ -72,18 +75,7 @@ class Poly3D extends Poly {
   }
 
   draw(ctx) {
-    // DEBUG:
-    // 15 deg
-    let cs15 = 0.9659258;
-    let sn15 = 0.2588190;
-    let move = matrix.identity();
-    let inv = matrix.identity();
-    [move, inv] = matrix.rotateX(move, inv, 0, 1);
-    [move, inv] = matrix.rotateY(move, inv, cs15, sn15);
-    [move, inv] = matrix.translate(move, inv, 0, 0, 60);
-
-    let points = matrix.multiplyPoints(move, this.vertices);
-    let projected = points.map(vertex => this.project3d(vertex, ctx));
+    let projected = this.vertices.map(vertex => this.project3d(vertex, ctx));
 
     const poly2d = new Poly2D(projected);
     poly2d.draw(ctx)

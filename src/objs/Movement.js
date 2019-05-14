@@ -1,8 +1,10 @@
 
-// library for 4x4 matrices
-// column vectors: x | y | z | translation
+class Movement {
+  constructor(moveMatrix, invMatrix) {
+    this.move = moveMatrix ? moveMatrix : this.identity();
+    this.inv = invMatrix ? invMatrix : this.identity();
+  }
 
-class Matrix {
   identity() {
     let identity = [[],[],[],[]];
     for(let i = 0; i < 4; i++) {
@@ -24,7 +26,12 @@ class Matrix {
     return out;
   }
 
-  translate(mat, inv, dx, dy, dz) {
+  applyMatrix(move, inv) {
+    this.move = this.multiply(move, this.move);
+    this.inv = this.multiply(this.inv, inv);
+  }
+
+  translate(dx, dy, dz) {
     let trans = this.identity();
     let transinv = this.identity();
 
@@ -36,13 +43,22 @@ class Matrix {
     transinv[1][3] = -dy;
     transinv[2][3] = -dz;
 
-    mat = this.multiply(trans, mat);
-    inv = this.multiply(inv, transinv);
+    this.applyMatrix(trans, transinv)
 
-    return [mat, inv];
+    return this;
   }
 
-  scale(mat, inv, sx, sy, sz) {
+  translateX(dx) {
+    return this.translate(dx, 0, 0);
+  }
+  translateY(dy) {
+    return this.translate(0, dy, 0);
+  }
+  translateZ(dz) {
+    return this.translate(0, 0, dz);
+  }
+
+  scale(sx, sy, sz) {
     let scale = this.identity();
     let scaleinv = this.identity();
 
@@ -54,14 +70,23 @@ class Matrix {
     scaleinv[1][1] = -sy;
     scaleinv[2][2] = -sz;
 
-    mat = this.multiply(scale, mat);
-    inv = this.multiply(inv, scaleinv);
+    this.applyMatrix(scale, scaleinv)
 
-    return [mat, inv];
+    return this;
+  }
+
+  scaleX(sx) {
+    return this.scale(sx, 0, 0);
+  }
+  scaleY(sy) {
+    return this.scale(0, sy, 0);
+  }
+  scaleZ(sz) {
+    return this.scale(0, 0, sz);
   }
 
   // takes the cos & sin of the rotation angle
-  rotateX(mat, inv, cs, sn) {
+  rotateX(cs, sn) {
     let rotate = this.identity();
     let rotateinv = this.identity();
 
@@ -75,13 +100,12 @@ class Matrix {
     rotateinv[2][1] = -sn;
     rotateinv[2][2] = cs;
 
-    mat = this.multiply(rotate, mat);
-    inv = this.multiply(inv, rotateinv);
+    this.applyMatrix(rotate, rotateinv);
 
-    return [mat, inv];
+    return this;
   }
 
-  rotateY(mat, inv, cs, sn) {
+  rotateY(cs, sn) {
     let rotate = this.identity();
     let rotateinv = this.identity();
 
@@ -95,13 +119,12 @@ class Matrix {
     rotateinv[2][0] = sn;
     rotateinv[2][2] = cs;
 
-    mat = this.multiply(rotate, mat);
-    inv = this.multiply(inv, rotateinv);
+    this.applyMatrix(rotate, rotateinv);
 
-    return [mat, inv];
+    return this;
   }
 
-  rotateZ(mat, inv, cs, sn) {
+  rotateZ(cs, sn) {
     let rotate = this.identity();
     let rotateinv = this.identity();
 
@@ -115,27 +138,10 @@ class Matrix {
     rotateinv[1][0] = -sn;
     rotateinv[1][1] = cs;
 
-    mat = this.multiply(rotate, mat);
-    inv = this.multiply(inv, rotateinv);
+    this.applyMatrix(rotate, rotateinv);
 
-    return [mat, inv];
-  }
-
-  multiplyPoints(mat, points) {
-    const numPoints = points.length;
-    const out = [];
-    for(let i = 0; i < numPoints; i++) {
-      let x = points[i][0];
-      let y = points[i][1];
-      let z = points[i][2];
-      out[i] = [];
-
-      for (let c = 0; c < 3; c++) {
-        out[i][c] = x*mat[c][0] + y*mat[c][1] + z*mat[c][2] + mat[c][3]
-      }
-    }
-    return out;
+    return this;
   }
 }
 
-module.exports = Matrix
+module.exports = Movement;

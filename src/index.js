@@ -1,5 +1,6 @@
 'use strict';
 
+import Movement from './objs/Movement';
 import Shape from './objs/Shape';
 import World from './objs/World';
 
@@ -11,13 +12,25 @@ function init() {
   const body = document.querySelector('body')
   const world = new World(body, drawStuff);
   world.init();
+
   setupObjects(world);
+
+  world.draw();
 }
 
 function setupObjects(world) {
   const obj = new Shape(sphere);
+
+  const move = new Movement();
+  move.rotateX(0, 1);
+  // 15 deg
+  let cs15 = 0.9659258;
+  let sn15 = 0.2588190;
+  move.rotateY(cs15, sn15);
+  move.translateZ(60);
+  obj.move(move);
+
   world.add(obj);
-  world.draw();
 }
 
 function drawStuff(ctx) {
