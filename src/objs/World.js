@@ -6,6 +6,7 @@ class World {
     this.container = div;
     this.initialized = false;
     this.customDrawFunc = customDrawFunc;
+    this.shapes = [];
   }
 
   init() {
@@ -21,15 +22,24 @@ class World {
     this.initialized = true;
   }
 
-  clear() {
+  add(shape, doRedraw) {
+    this.shapes.push(shape);
+    if(doRedraw)
+      this.draw();
+  }
+
+  clearScreen() {
     this.ctx.clearRect(0, 0, this.canvas.height, this.canvas.width);
   }
 
-  draw(ctx) {
-    // handle drawing things
-
-    if(this.customDrawFunc)
-      this.customDrawFunc(this.ctx);
+  draw() {
+    if(this.initialized)
+    {
+      // handle drawing things
+      this.shapes.forEach(obj => obj.draw(this.ctx));
+      if(this.customDrawFunc)
+        this.customDrawFunc(this.ctx);
+    }
   }
 
   resize() {
@@ -37,7 +47,7 @@ class World {
     this.canvas.width = rect.width;
     this.canvas.height = rect.height;
 
-    this.clear();
+    this.clearScreen();
     this.draw();
   }
 }
