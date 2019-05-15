@@ -6,7 +6,36 @@ class World {
     this.container = div;
     this.initialized = false;
     this.customDrawFunc = customDrawFunc;
+
     this.shapes = [];
+    this.numPolys = 0;
+  }
+
+  get numShapes() { return this.shapes.length; }
+  get sortedPolys() {
+    const polys = this.shapes.map(shape => shape.sortedPolys);
+    let sortedPolys = [];
+
+    const mergeSortedPolyLists = (A, B) => {
+      const out = [];
+      const size = A.length + B.length;
+      let [a, b] = [0, 0];
+      for (var i = 0; i < size; i++) {
+        if(a == A.length) return out.concat(B.slice(b));
+        if(b == B.length) return out.concat(A.slice(a));
+
+        if(A[a].avgZ >= B[b].avgZ)
+          out.push(A[a++]);
+        else
+          out.push(B[b++]);
+      }
+      return out;
+    }
+    polys.forEach((p, i) => {
+      sortedPolys = mergeSortedPolyLists(sortedPolys, p);
+    });
+
+    return sortedPolys;
   }
 
   init() {
@@ -24,6 +53,7 @@ class World {
 
   add(shape, doRedraw) {
     this.shapes.push(shape);
+    this.numPolys += shape.numPolys;
     if(doRedraw)
       this.draw();
   }
@@ -49,12 +79,11 @@ class World {
   }
 
   draw() {
-    if(this.initialized)
-    {
-      this.shapes.forEach(shape => shape.draw(this.ctx));
-      if(this.customDrawFunc)
-        this.customDrawFunc(this.ctx);
-    }
+    if(this.initialized && this.shapes.length)
+      this.sortedPolys.forEach(poly => poly.draw(this.ctx));
+
+    if(this.customDrawFunc)
+      this.customDrawFunc(this.ctx);
   }
 
   resize() {

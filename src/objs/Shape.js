@@ -14,6 +14,24 @@ class Shape {
   }
 
   get numPoints() { return this.vertices.length; }
+  get numPolys() { return this.faces.length; }
+
+  get sortedPolys() {
+    return this.faces.map(face => {
+      const vertices = face.map(i => this.vertices[i]);
+      return new Poly3D(vertices, {
+        isFilled: true,
+        strokeColor: '#000',
+        color: '#bad',
+      });
+    }).sort((a, b) => {
+      if (a.avgZ > b.avgZ)
+        return -1;
+      else if (a.avgZ < b.avgZ)
+        return 1;
+      return 0;
+    });
+  }
 
   get center() {
     let min = [Infinity, Infinity, Infinity];
@@ -35,19 +53,13 @@ class Shape {
   }
 
   draw(ctx) {
-    this.sortFaces();
-    this.faces.forEach(face => {
-      const vertices = face.map(index => this.vertices[index]);
-      const poly = new Poly3D(vertices, {
-        isFilled: true,
-        strokeColor: '#000'
-      });
+    this.sortedPolys.forEach(poly => {
       poly.color = '#bad';
       poly.draw(ctx);
     });
   }
 
-  move(movement, noSort) {
+  move(movement) {
     const m = movement.move;
     const numPoints = this.numPoints;
     for(let i = 0; i < numPoints; i++) {
@@ -61,39 +73,12 @@ class Shape {
     }
 
     this.movement.applyMovement(movement);
-    if(!noSort)
-      this.sortFaces();
   }
 
-  sortFaces() {
-    const vertices = this.vertices;
-    const getAvgZ = verts => {
-      let min = Infinity;
-      let max = -Infinity;
-      verts.forEach( v => {
-        if(vertices[v][2] < min) min = vertices[v][2];
-        if(vertices[v][2] > max) max = vertices[v][2];
-      });
-      return (min + max) / 2;
-    };
-    const compare = (faceA, faceB) => {
-      const avgA = getAvgZ(faceA);
-      const avgB = getAvgZ(faceB);
-      if (avgA < avgB)
-        return 1;
-      else if (avgA == avgB)
-        return 0;
-      else
-        return -1;
-    };
-
-    this.faces.sort(compare);
-  }
-
-  untranslate(noSort) {
+  untranslate() {
     const center = this.center;
     const trans = new Movement().translate(center);
-    this.move(new Movement(trans.inv, trans.move), noSort);
+    this.move(new Movement(trans.inv, trans.move));
     return trans;
   }
 };

@@ -24,20 +24,32 @@ function setupObjects(world) {
   // 1 deg
   let cs1 = Math.cos(Math.PI / 180);
   let sn1 = Math.sin(Math.PI / 180);
-  const rotate = new Movement().rotateY(cs1, sn1);
-  const animate = (o) => {
-    const trans = o.untranslate(1);
-    o.move(rotate);
-    o.move(trans);
-  };
+  let rotateX = new Movement().rotateX(cs1, sn1);
+  let rotateY = new Movement().rotateY(cs1, sn1);
 
   let obj; let move;
 
   obj = new Shape(torus);
-  obj.onAnimate = animate;
+  obj.onAnimate = o => {
+    const trans = o.untranslate(1);
+    o.move(rotateY);
+    o.move(trans);
+  };
   move = new Movement();
-  move.scale(10, 10, 10);
+  move.scale(3, 10, 10);
   move.translate(0, 0, 40);
+  obj.move(move);
+  world.add(obj);
+
+  obj = new Shape(sphere);
+  obj.onAnimate = o => {
+    const trans = o.untranslate(1);
+    o.move(rotateX);
+    o.move(trans);
+  };
+  move = new Movement()
+    .scale(1/5, 2/5, 2/5)
+    .translate(0, 0, 40);
   obj.move(move);
   world.add(obj);
 }
@@ -49,37 +61,9 @@ function drawStuff(ctx) {
   gradient.addColorStop(1, '#fff');
   ctx.strokeStyle = gradient;
   ctx.font = '48px serif';
-  ctx.fillText('Doing some graphics!', 10, 50);
-  ctx.strokeText('Doing some graphics!', 10, 50);
-
-  // gradient = ctx.createLinearGradient(0, 0, ctx.canvas.width, 0);
-  // gradient.addColorStop(0, '#000');
-  // gradient.addColorStop(0.5, 'purple');
-  // gradient.addColorStop(1, '#fff');
-  //
-  // let opts = {
-  //   color: gradient,
-  //   isFilled: true
-  // };
-  // let vertices = [[100,100], [500,100], [500,500], [300, 300], [100,500]];
-  // let poly = new Poly2D(vertices, opts);
-  // poly.draw(ctx);
-  //
-  // window.diamond = diamond
-  //
-  // ctx.fillStyle = '#f00'
-  // ctx.beginPath();
-  // ctx.arc(300, 300, 50, 0, 2*Math.PI);
-  // ctx.closePath();
-  // ctx.fill();
-
-  // window.sphere = sphere;
-  //
-  // sphere.faces.forEach(face => {
-  //   const vertices = face.map(index => sphere.vertices[index]);
-  //   const poly = new Poly3D(vertices);
-  //   poly.draw(ctx);
-  // });
+  const str = 'Doing some graphics!'
+  ctx.fillText(str, 10, 50);
+  ctx.strokeText(str, 10, 50);
 }
 
 window.onload = init;

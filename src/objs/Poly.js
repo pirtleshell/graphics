@@ -69,15 +69,19 @@ class Poly3D extends Poly {
     super(vertices, options);
 
     this.fov = Math.tan(Math.PI / 4);
+    this.minZ = vertices.reduce((currMin, v) => (
+      currMin < v[2] ? currMin : v[2]
+    ), Infinity);
+    this.avgZ = vertices.reduce((sum, v) => sum+v[2], 0) / vertices.length; 
 
     this.draw = this.draw.bind(this);
     this.project3d = this.project3d.bind(this);
   }
 
   draw(ctx) {
+    // this.setStyle(ctx);
     let projected = this.vertices.map(vertex => this.project3d(vertex, ctx));
-
-    const poly2d = new Poly2D(projected);
+    const poly2d = new Poly2D(projected, this.options);
     poly2d.draw(ctx)
   }
 
