@@ -6,7 +6,7 @@ class World {
     this.container = div;
     this.initialized = false;
     this.customDrawFunc = customDrawFunc;
-    this.objects = [];
+    this.shapes = [];
   }
 
   init() {
@@ -22,8 +22,8 @@ class World {
     this.initialized = true;
   }
 
-  add(obj, doRedraw) {
-    this.objects.push(obj);
+  add(shape, doRedraw) {
+    this.shapes.push(shape);
     if(doRedraw)
       this.draw();
   }
@@ -31,9 +31,9 @@ class World {
   animate(maxSteps) {
     let currStep = 0;
     const doStep = () => {
-      this.objects.forEach(obj => {
-        if(obj.onAnimate)
-          obj.onAnimate(obj, this);
+      this.shapes.forEach(shape => {
+        if(shape.onAnimate)
+          shape.onAnimate(shape, this);
       })
       this.clearScreen();
       this.draw();
@@ -51,7 +51,7 @@ class World {
   draw() {
     if(this.initialized)
     {
-      this.objects.forEach(obj => obj.draw(this.ctx));
+      this.shapes.forEach(shape => shape.draw(this.ctx));
       if(this.customDrawFunc)
         this.customDrawFunc(this.ctx);
     }
