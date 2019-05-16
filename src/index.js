@@ -29,7 +29,7 @@ function setupObjects(world) {
 
   let obj; let move;
 
-  obj = new Shape(torus);
+  obj = new Shape(torus());
   obj.onAnimate = o => {
     const trans = o.untranslate(1);
     o.move(rotateY);
@@ -41,15 +41,28 @@ function setupObjects(world) {
   obj.move(move);
   world.add(obj);
 
-  obj = new Shape(sphere);
+  obj = new Shape(sphere());
   obj.onAnimate = o => {
     const trans = o.untranslate(1);
     o.move(rotateX);
     o.move(trans);
   };
   move = new Movement()
-    .scale(1/5, 2/5, 2/5)
+    .scale(2/5, 2/5, 2/5)
     .translate(0, 0, 40);
+  obj.move(move);
+  world.add(obj);
+  obj = null
+
+  obj = new Shape(sphere());
+  obj.onAnimate = o => {
+    const trans = o.untranslate(1);
+    o.move(rotateX);
+    o.move(trans);
+  };
+  move = new Movement()
+    .scale(1/5, 1/5, 1/5)
+    .translate(30, 0, 40);
   obj.move(move);
   world.add(obj);
 }

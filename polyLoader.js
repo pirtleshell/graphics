@@ -22,7 +22,7 @@ function readPolys(content) {
     faces.push(face.split(',').map(p => parseInt(p)));
   }
 
-  return `module.exports = ${JSON.stringify({vertices, faces})}`;
+  return `module.exports = () => (${JSON.stringify({vertices, faces})})`;
 }
 
 module.exports = readPolys;
