@@ -1,5 +1,5 @@
 
-import { Poly3D } from './Poly';
+import Poly3d from './Poly3d';
 import Movement from './Movement';
 
 class Shape {
@@ -19,7 +19,7 @@ class Shape {
   get sortedPolys() {
     return this.faces.map(face => {
       const vertices = face.map(i => this.vertices[i]);
-      return new Poly3D(vertices, {
+      return new Poly3d(vertices, {
         isFilled: true,
         strokeColor: '#000',
         color: '#bad',
