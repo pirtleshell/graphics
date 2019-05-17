@@ -22,8 +22,9 @@ function init() {
 
 function setupObjects(world) {
   // 1 deg
-  let cs1 = Math.cos(Math.PI / 180);
-  let sn1 = Math.sin(Math.PI / 180);
+  let deg = Math.PI / 180;
+  let cs1 = Math.cos(deg);
+  let sn1 = Math.sin(deg);
   let rotateX = new Movement().rotateX(cs1, sn1);
   let rotateY = new Movement().rotateY(cs1, sn1);
 
@@ -32,12 +33,15 @@ function setupObjects(world) {
   obj = new Shape(torus());
   obj.onAnimate = o => {
     const trans = o.untranslate(1);
+
     o.move(rotateY);
     o.move(trans);
   };
-  move = new Movement();
-  move.scale(3, 10, 10);
-  move.translate(0, 0, 40);
+  move = new Movement()
+    .scale(3, 10, 10)
+    .rotateZ(0, 1)
+    .rotateX(Math.cos(-15*deg), Math.sin(-15*deg))
+    .translate(0, 0, 40);
   obj.move(move);
   world.add(obj);
 

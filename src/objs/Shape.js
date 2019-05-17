@@ -25,9 +25,9 @@ class Shape {
         color: '#bad',
       });
     }).sort((a, b) => {
-      if (a.avgZ > b.avgZ)
+      if (a.dist > b.dist)
         return -1;
-      else if (a.avgZ < b.avgZ)
+      else if (a.dist < b.dist)
         return 1;
       return 0;
     });

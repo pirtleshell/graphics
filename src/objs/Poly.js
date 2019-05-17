@@ -1,4 +1,6 @@
 
+import Vector3 from './Vector3';
+
 const defaultOptions = {
   color: '#000',
   isFilled: false,
@@ -69,13 +71,21 @@ class Poly3D extends Poly {
     super(vertices, options);
 
     this.fov = Math.tan(Math.PI / 4);
-    this.minZ = vertices.reduce((currMin, v) => (
-      currMin < v[2] ? currMin : v[2]
-    ), Infinity);
-    this.avgZ = vertices.reduce((sum, v) => sum+v[2], 0) / vertices.length; 
+
+    this.calcCenter();
+    this.dist = this.center.magnitude();
 
     this.draw = this.draw.bind(this);
     this.project3d = this.project3d.bind(this);
+  }
+
+  calcCenter() {
+    let vertices = this.vertices;
+    let avgX = vertices.reduce((sum, v) => sum+v[0], 0) / vertices.length;
+    let avgY = vertices.reduce((sum, v) => sum+v[1], 0) / vertices.length;
+    let avgZ = vertices.reduce((sum, v) => sum+v[2], 0) / vertices.length;
+    this.center = new Vector3(avgX, avgY, avgZ);
+    return this.center;
   }
 
   draw(ctx) {

@@ -24,7 +24,7 @@ class World {
         if(a == A.length) return out.concat(B.slice(b));
         if(b == B.length) return out.concat(A.slice(a));
 
-        if(A[a].avgZ >= B[b].avgZ)
+        if(A[a].dist >= B[b].dist)
           out.push(A[a++]);
         else
           out.push(B[b++]);

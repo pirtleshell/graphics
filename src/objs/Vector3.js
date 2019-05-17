@@ -1,18 +1,23 @@
 
-class Vector {
+class Vector3 {
   constructor(x, y, z) {
+    this.type = 'vector';
     this.x = x;
     this.y = y;
     this.z = z;
   }
 
   direction() {
-    const magnitude = Math.sqrt(x*x + y*y + z*z);
-    return new Vector(
+    const magnitude = this.magnitude;
+    return new Vector3(
       this.x / magnitude,
       this.y / magnitude,
       this.z / magnitude
     );
+  }
+
+  magnitude() {
+    return Math.sqrt(this.x*this.x + this.y*this.y + this.z*this.z);
   }
 
   distanceFrom(v) {
@@ -30,6 +35,16 @@ class Vector {
     const a = this.y*v.z - this.z*v.y;
     const b = this.z*v.x - this.x*v.z;
     const c = this.x*v.y - this.y*v.x;
-    return new Vector(a, b, c);
+    return new Vector3(a, b, c);
+  }
+
+  to(v) {
+    return new Vector3(
+      this.x - v.x,
+      this.y - v.y,
+      this.z - v.z
+    );
   }
 }
+
+export default Vector3;
