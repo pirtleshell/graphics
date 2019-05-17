@@ -1,6 +1,8 @@
 'use strict';
 
+import Color from './objs/Color';
 import Movement from './objs/Movement';
+import Light from './objs/Light';
 import Shape from './objs/Shape';
 import World from './objs/World';
 
@@ -31,7 +33,11 @@ function setupObjects(world) {
 
   let obj; let move;
 
+  const light = new Light(10, 20, 0);
+  world.light = light;
+
   obj = new Shape(torus());
+  obj.inverted = 1;
   obj.color = '#bad';
   obj.onAnimate = o => {
     const trans = o.untranslate(1);
@@ -47,8 +53,7 @@ function setupObjects(world) {
   world.add(obj);
 
   obj = new Shape(sphere());
-  obj.color = '#007';
-  obj.strokeColor = '#fff';
+  obj.color = '#00f';
   obj.onAnimate = o => {
     const trans = o.untranslate(1);
     o.move(rotateX);
@@ -56,12 +61,13 @@ function setupObjects(world) {
   };
   move = new Movement()
     .scale(2/5, 2/5, 2/5)
+    .rotateY(0, 1)
     .translate(0, -7, 40);
   obj.move(move);
   world.add(obj);
 
   obj = new Shape(sphere());
-  obj.color = '#00f';
+  obj.color = '#ff0';
   obj.onAnimate = o => {
     const trans = o.untranslate(1);
     o.move(rotateX);
@@ -74,6 +80,7 @@ function setupObjects(world) {
   world.add(obj);
 
   obj = new Shape(stegosaurus());
+  obj.inverted = true;
   obj.color = '#5e9';
   obj.onAnimate = o => {
     const trans = o.untranslate(1);
@@ -90,6 +97,7 @@ function setupObjects(world) {
   world.add(obj);
 
   console.log(world);
+  window.Color = Color;
 }
 
 function drawStuff(ctx) {

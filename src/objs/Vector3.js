@@ -14,8 +14,6 @@ class Vector3 {
       x = x.x;
     }
 
-    this.type = 'vector';
-
     this.x = x;
     this[0] = x;
 
@@ -26,8 +24,9 @@ class Vector3 {
     this[2] = z;
   }
 
+  // returns unit vector of direction
   direction() {
-    const magnitude = this.magnitude;
+    const magnitude = this.magnitude();
     return new Vector3(
       this.x / magnitude,
       this.y / magnitude,
@@ -35,33 +34,40 @@ class Vector3 {
     );
   }
 
+  // returns vector length
   magnitude() {
     return Math.sqrt(this.x*this.x + this.y*this.y + this.z*this.z);
   }
 
-  distanceFrom(v) {
-    const i = v.x - this.x;
-    const j = v.y - this.y;
-    const k = v.z - this.z;
-    return Math.sqrt(i*i + j*j + k*k);
+  // distance from this to target
+  distance(target) {
+    const v = this.to(target);
+    return v.magnitude();
   }
 
+  // dot product
   dot(v) {
     return v.x*this.x + v.y*this.y + v.z*this.z;
   }
 
+  // cross product
   cross(v) {
     const a = this.y*v.z - this.z*v.y;
     const b = this.z*v.x - this.x*v.z;
     const c = this.x*v.y - this.y*v.x;
-    return new Vector3(a, b, c);
+    return new this.constructor(a, b, c);
   }
 
-  to(v) {
-    return new Vector3(
-      this.x - v.x,
-      this.y - v.y,
-      this.z - v.z
+  scale(s) {
+    return new this.constructor(this.x*s, this.y*s, this.z*s);
+  }
+
+  // returns a vector pointing from this to target
+  to(target) {
+    return new this.constructor(
+      target.x - this.x,
+      target.y - this.y,
+      target.z - this.z
     );
   }
 }

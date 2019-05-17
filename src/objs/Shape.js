@@ -1,4 +1,5 @@
 
+import Color from './Color';
 import Poly3d from './Poly3d';
 import Movement from './Movement';
 
@@ -11,20 +12,22 @@ class Shape {
     this.onAnimate = null;
 
     this.polyOptions = {
-      color: '#fff',
+      color: new Color(255, 255, 255),
       isFilled: true,
-      strokeColor: '#000',
     };
 
     this.draw = this.draw.bind(this);
   }
 
   get color() { return this.polyOptions.color; }
-  set color(c) { this.polyOptions.color = c; }
+  set color(c) { this.polyOptions.color = new Color(c); }
   get isFilled() { return this.polyOptions.isFilled; }
   set isFilled(f) { this.polyOptions.isFilled = f;}
   get strokeColor() { return this.polyOptions.strokeColor; }
   set strokeColor(c) { this.polyOptions.strokeColor = c; }
+
+  get inverted() { return this.polyOptions.inverted; }
+  set inverted(i) { this.polyOptions.inverted = i; }
 
   get numPoints() { return this.vertices.length; }
   get numPolys() { return this.faces.length; }

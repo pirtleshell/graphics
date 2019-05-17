@@ -40,7 +40,7 @@ def make_sphere(center, radius, tsteps=20, psteps=15, plotting=False):
     # top polys
     for i, point in enumerate(rows[1][:-1]):
         next_point = rows[1][i + 1]
-        polys.append( (0, point, next_point) )
+        polys.append( (point, 0, next_point) )
 
     # middle polys
     for r, row in enumerate(rows[1:-2]):

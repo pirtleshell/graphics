@@ -1,11 +1,13 @@
 
+import Color from './Color';
+
 class Poly {
   constructor(vertices, options) {
     if (!vertices || !Array.isArray(vertices) || vertices.length < 3)
       throw 'Polys require at least three vertices';
 
     let defaultOptions = {
-      color: '#000',
+      color: new Color(0, 0, 0),
       isFilled: false,
       strokeColor: null,
     };
@@ -14,7 +16,7 @@ class Poly {
   }
 
   get color() { return this.options.color; }
-  set color(c) { this.options.color = c;}
+  set color(c) { this.options.color = new Color(c);}
   get strokeColor() { return this.options.strokeColor; }
   set strokeColor(c) { this.options.strokeColor = c; }
   get isFilled() { return this.options.isFilled; }
@@ -23,7 +25,7 @@ class Poly {
   get numPoints() { return this.vertices.length; }
 
   doDraw(ctx) {
-    ctx.fillStyle = this.color;
+    ctx.fillStyle = this.color.hexStr;
     ctx.strokeStyle = this.strokeColor;
     if (this.options.isFilled)
       ctx.fill();

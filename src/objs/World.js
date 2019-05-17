@@ -9,6 +9,7 @@ class World {
 
     this.shapes = [];
     this.numPolys = 0;
+    this.light = null;
   }
 
   get numShapes() { return this.shapes.length; }
@@ -80,7 +81,15 @@ class World {
 
   draw() {
     if(this.initialized && this.shapes.length)
-      this.sortedPolys.forEach(poly => {
+      this.sortedPolys.forEach((poly, i) => {
+        if(this.light != null)
+        {
+          let initColor = poly.color;
+          const normal = poly.normal();
+          poly.color = this.light.calcColor(
+            poly.center, normal, initColor
+          );
+        }
         poly.draw(this.ctx)
       });
 

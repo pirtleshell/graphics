@@ -17,6 +17,21 @@ class Poly3d extends Poly {
     this.project3d = this.project3d.bind(this);
   }
 
+  get center() {
+    let extrema = [
+      [Infinity, -Infinity],
+      [Infinity, -Infinity],
+      [Infinity, -Infinity]
+    ];
+    this.vertices.forEach(v => {
+      for (var i = 0; i < 3; i++) {
+        if (v[i] < extrema[i][0]) extrema[i][0] = v[i];
+        if (v[i] > extrema[i][1]) extrema[i][1] = v[i];
+      }
+    });
+    return new Vector3(extrema.map(e => ((e[1]-e[0])/2)));
+  }
+
   calcCenterOfMass() {
     let vertices = this.vertices;
     let avgX = vertices.reduce((sum, v) => sum+v.x, 0) / vertices.length;
@@ -35,7 +50,10 @@ class Poly3d extends Poly {
   normal() {
     const v1 = this.vertices[0].to(this.vertices[1]);
     const v2 = this.vertices[0].to(this.vertices[2]);
-    return v1.cross(v2);
+    let unit = v1.cross(v2).direction();
+    if(this.options.inverted)
+      return unit.scale(-1);
+    return unit;
   }
 
   project3d(point, ctx) {
