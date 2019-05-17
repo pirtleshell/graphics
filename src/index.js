@@ -32,6 +32,7 @@ function setupObjects(world) {
   let obj; let move;
 
   obj = new Shape(torus());
+  obj.color = '#bad';
   obj.onAnimate = o => {
     const trans = o.untranslate(1);
     o.move(rotateY);
@@ -46,6 +47,8 @@ function setupObjects(world) {
   world.add(obj);
 
   obj = new Shape(sphere());
+  obj.color = '#007';
+  obj.strokeColor = '#fff';
   obj.onAnimate = o => {
     const trans = o.untranslate(1);
     o.move(rotateX);
@@ -58,6 +61,7 @@ function setupObjects(world) {
   world.add(obj);
 
   obj = new Shape(sphere());
+  obj.color = '#00f';
   obj.onAnimate = o => {
     const trans = o.untranslate(1);
     o.move(rotateX);
@@ -70,6 +74,7 @@ function setupObjects(world) {
   world.add(obj);
 
   obj = new Shape(stegosaurus());
+  obj.color = '#5e9';
   obj.onAnimate = o => {
     const trans = o.untranslate(1);
     o.move(rotateY);

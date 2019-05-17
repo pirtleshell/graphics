@@ -10,8 +10,21 @@ class Shape {
 
     this.onAnimate = null;
 
+    this.polyOptions = {
+      color: '#fff',
+      isFilled: true,
+      strokeColor: '#000',
+    };
+
     this.draw = this.draw.bind(this);
   }
+
+  get color() { return this.polyOptions.color; }
+  set color(c) { this.polyOptions.color = c; }
+  get isFilled() { return this.polyOptions.isFilled; }
+  set isFilled(f) { this.polyOptions.isFilled = f;}
+  get strokeColor() { return this.polyOptions.strokeColor; }
+  set strokeColor(c) { this.polyOptions.strokeColor = c; }
 
   get numPoints() { return this.vertices.length; }
   get numPolys() { return this.faces.length; }
@@ -19,11 +32,7 @@ class Shape {
   get sortedPolys() {
     return this.faces.map(face => {
       const vertices = face.map(i => this.vertices[i]);
-      return new Poly3d(vertices, {
-        isFilled: true,
-        strokeColor: '#000',
-        color: '#bad',
-      });
+      return new Poly3d(vertices, this.polyOptions);
     }).sort((a, b) => {
       if (a.dist > b.dist)
         return -1;
@@ -53,10 +62,7 @@ class Shape {
   }
 
   draw(ctx) {
-    this.sortedPolys.forEach(poly => {
-      poly.color = '#bad';
-      poly.draw(ctx);
-    });
+    this.sortedPolys.forEach(poly => poly.draw(ctx));
   }
 
   move(movement) {

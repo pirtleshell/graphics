@@ -27,7 +27,6 @@ class Poly3d extends Poly {
   }
 
   draw(ctx) {
-    // this.setStyle(ctx);
     let projected = this.vertices.map(vertex => this.project3d(vertex, ctx));
     const poly2d = new Poly2d(projected, this.options);
     poly2d.draw(ctx)

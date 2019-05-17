@@ -1,15 +1,14 @@
 
-const defaultOptions = {
-  color: '#000',
-  isFilled: false,
-  strokeColor: null,
-};
-
 class Poly {
   constructor(vertices, options) {
     if (!vertices || !Array.isArray(vertices) || vertices.length < 3)
       throw 'Polys require at least three vertices';
 
+    let defaultOptions = {
+      color: '#000',
+      isFilled: false,
+      strokeColor: null,
+    };
     this.options = Object.assign(defaultOptions, options);
     this.vertices = vertices;
   }
@@ -23,22 +22,13 @@ class Poly {
 
   get numPoints() { return this.vertices.length; }
 
-  finishDraw(ctx) {
+  doDraw(ctx) {
+    ctx.fillStyle = this.color;
+    ctx.strokeStyle = this.strokeColor;
     if (this.options.isFilled)
       ctx.fill();
-      if(this.options.strokeColor) {
-        ctx.strokeStyle = this.options.strokeColor;
-        ctx.stroke();
-      }
-    else
+    if(this.options.strokeColor)
       ctx.stroke();
-  }
-
-  setStyle(ctx) {
-    if(this.options.isFilled)
-      ctx.fillStyle = this.options.color;
-    else
-      ctx.strokeStyle = this.options.color;
   }
 }
 

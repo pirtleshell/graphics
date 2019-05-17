@@ -80,7 +80,9 @@ class World {
 
   draw() {
     if(this.initialized && this.shapes.length)
-      this.sortedPolys.forEach(poly => poly.draw(this.ctx));
+      this.sortedPolys.forEach(poly => {
+        poly.draw(this.ctx)
+      });
 
     if(this.customDrawFunc)
       this.customDrawFunc(this.ctx);

@@ -8,8 +8,6 @@ class Poly2d extends Poly {
   }
 
   draw(ctx) {
-    this.setStyle(ctx);
-
     ctx.beginPath();
     ctx.moveTo(this.vertices[0][0], this.vertices[0][1]);
     this.vertices.slice(1, this.numPoints).forEach(vertex => {
@@ -17,7 +15,7 @@ class Poly2d extends Poly {
     });
     ctx.closePath();
 
-    this.finishDraw(ctx);
+    this.doDraw(ctx);
   }
 }
 
