@@ -70,22 +70,23 @@ class Poly3D extends Poly {
   constructor(vertices, options) {
     super(vertices, options);
 
+    this.vertices = vertices.map(v => new Vector3(v))
     this.fov = Math.tan(Math.PI / 4);
 
-    this.calcCenter();
-    this.dist = this.center.magnitude();
+    this.calcCenterOfMass();
+    this.dist = this.CoM.magnitude();
 
     this.draw = this.draw.bind(this);
     this.project3d = this.project3d.bind(this);
   }
 
-  calcCenter() {
+  calcCenterOfMass() {
     let vertices = this.vertices;
-    let avgX = vertices.reduce((sum, v) => sum+v[0], 0) / vertices.length;
-    let avgY = vertices.reduce((sum, v) => sum+v[1], 0) / vertices.length;
-    let avgZ = vertices.reduce((sum, v) => sum+v[2], 0) / vertices.length;
-    this.center = new Vector3(avgX, avgY, avgZ);
-    return this.center;
+    let avgX = vertices.reduce((sum, v) => sum+v.x, 0) / vertices.length;
+    let avgY = vertices.reduce((sum, v) => sum+v.y, 0) / vertices.length;
+    let avgZ = vertices.reduce((sum, v) => sum+v.z, 0) / vertices.length;
+    this.CoM = new Vector3(avgX, avgY, avgZ);
+    return this.CoM;
   }
 
   draw(ctx) {
@@ -100,8 +101,8 @@ class Poly3D extends Poly {
     const maxY = ctx.canvas.height / 2;
     let scale = Math.min(maxX, maxY);
 
-    const px = (scale / this.fov) * point[0]/point[2] + maxX;
-    const py = (scale / this.fov) * -point[1]/point[2] + maxY;
+    const px = (scale / this.fov) * point.x/point.z + maxX;
+    const py = (scale / this.fov) * -point.y/point.z + maxY;
 
     return [px, py];
   }
