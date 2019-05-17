@@ -1,10 +1,29 @@
 
 class Vector3 {
   constructor(x, y, z) {
+    if(Array.isArray(x)) {
+      if(x.length !== 3)
+        throw `Vector3 expects an array of length 3, got ${x.length}.`;
+      y = x[1];
+      z = x[2];
+      x = x[0];
+    }
+    else if(x.constructor.name === 'Vector3') {
+      y = x.y;
+      z = x.z;
+      x = x.x;
+    }
+
     this.type = 'vector';
+
     this.x = x;
+    this[0] = x;
+
     this.y = y;
+    this[1] = y;
+
     this.z = z;
+    this[2] = z;
   }
 
   direction() {
