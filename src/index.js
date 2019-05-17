@@ -6,6 +6,7 @@ import World from './objs/World';
 
 import diamond from './data/diamond.xyz';
 import sphere from './data/sphere.xyz';
+import stegosaurus from './data/stegosaurus.xyz';
 import torus from './data/torus.xyz';
 import './style.css';
 
@@ -33,7 +34,6 @@ function setupObjects(world) {
   obj = new Shape(torus());
   obj.onAnimate = o => {
     const trans = o.untranslate(1);
-
     o.move(rotateY);
     o.move(trans);
   };
@@ -41,7 +41,7 @@ function setupObjects(world) {
     .scale(3, 10, 10)
     .rotateZ(0, 1)
     .rotateX(Math.cos(-15*deg), Math.sin(-15*deg))
-    .translate(0, 0, 40);
+    .translate(0, -7, 40);
   obj.move(move);
   world.add(obj);
 
@@ -53,10 +53,9 @@ function setupObjects(world) {
   };
   move = new Movement()
     .scale(2/5, 2/5, 2/5)
-    .translate(0, 0, 40);
+    .translate(0, -7, 40);
   obj.move(move);
   world.add(obj);
-  obj = null
 
   obj = new Shape(sphere());
   obj.onAnimate = o => {
@@ -69,6 +68,23 @@ function setupObjects(world) {
     .translate(30, 0, 40);
   obj.move(move);
   world.add(obj);
+
+  obj = new Shape(stegosaurus());
+  obj.onAnimate = o => {
+    const trans = o.untranslate(1);
+    o.move(rotateY);
+    o.move(trans);
+  };
+  move = new Movement()
+    .scale(3, 3, 3)
+    .rotateX(Math.cos(-90*deg), Math.sin(-90*deg))
+    .rotateZ(Math.cos(-12*deg), Math.sin(-12*deg))
+    .rotateY(0, -1)
+    .translate(0, 20, 40);
+  obj.move(move);
+  world.add(obj);
+
+  console.log(world);
 }
 
 function drawStuff(ctx) {
