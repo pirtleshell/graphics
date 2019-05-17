@@ -6,7 +6,7 @@
 // comma-delimited list of point indices
 
 function readPolys(content) {
-  const lines = content.split('\n');
+  const lines = content.split('\n').filter(l => l.length > 0);
 
   const numPoints = parseInt(lines[0]);
   const vertices = [];
