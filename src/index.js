@@ -4,6 +4,7 @@ import Color from './objs/Color';
 import Movement from './objs/Movement';
 import Light from './objs/Light';
 import Shape from './objs/Shape';
+import View from './objs/View';
 import World from './objs/World';
 
 import diamond from './data/diamond.xyz';
@@ -13,21 +14,27 @@ import torus from './data/torus.xyz';
 import './style.css';
 
 function init() {
-  const body = document.querySelector('body')
-  const world = new World(body, drawStuff);
-  world.init();
-
+  const container = document.querySelector('#content');
+  const stars = document.querySelector('#stars');
+  const world = new World();
   setupObjects(world);
 
+  const view = new View(container, [0, 0, 0], {
+    clearFunc: ctx => {
+      ctx.drawImage(stars, 0, 0, ctx.canvas.width, ctx.canvas.height)
+    },
+    postDraw: drawStuff,
+  });
+
   // world.draw();
-  world.animate(360*3);
+  view.animate(world, 360*3);
 }
 
 function setupObjects(world) {
   // 1 deg
   let deg = Math.PI / 180;
-  let cs1 = Math.cos(deg);
-  let sn1 = Math.sin(deg);
+  let cs1 = Math.cos(3*deg);
+  let sn1 = Math.sin(3*deg);
   let rotateX = new Movement().rotateX(cs1, sn1);
   let rotateY = new Movement().rotateY(cs1, sn1);
 
@@ -79,25 +86,24 @@ function setupObjects(world) {
   obj.move(move);
   world.add(obj);
 
-  obj = new Shape(stegosaurus());
-  obj.inverted = true;
-  obj.color = '#5e9';
-  obj.onAnimate = o => {
-    const trans = o.untranslate(1);
-    o.move(rotateY);
-    o.move(trans);
-  };
-  move = new Movement()
-    .scale(3, 3, 3)
-    .rotateX(Math.cos(-90*deg), Math.sin(-90*deg))
-    .rotateZ(Math.cos(-12*deg), Math.sin(-12*deg))
-    .rotateY(0, -1)
-    .translate(0, 20, 40);
-  obj.move(move);
-  world.add(obj);
+  // obj = new Shape(stegosaurus());
+  // obj.inverted = true;
+  // obj.color = '#5e9';
+  // obj.onAnimate = o => {
+  //   const trans = o.untranslate(1);
+  //   o.move(rotateY);
+  //   o.move(trans);
+  // };
+  // move = new Movement()
+  //   .scale(3, 3, 3)
+  //   .rotateX(Math.cos(-90*deg), Math.sin(-90*deg))
+  //   .rotateZ(Math.cos(-12*deg), Math.sin(-12*deg))
+  //   .rotateY(0, -1)
+    // .translate(0, 20, 40);
+  // obj.move(move);
+  // world.add(obj);
 
   console.log(world);
-  window.Color = Color;
 }
 
 function drawStuff(ctx) {
