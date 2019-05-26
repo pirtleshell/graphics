@@ -80,12 +80,13 @@ class View {
     vertices = s.vertices;
 
     const projected = vertices.map(this.projection);
-    // sort em into list of [index, distance]
+    // sort em into list of [index, distance, normal]
     let dists = [];
     faces.forEach((face, num) => {
       const poly = new Poly(face[0].map(i => vertices[i]), world.shapes[face[1]].polyOptions);
       const normal = poly.normal();
-      if(poly.minZ > minZ)
+      let toEye = poly.CoM.scale(-1);
+      if(poly.minZ > minZ && normal.dot(toEye) > 0)
         dists.push([num, poly.dist, normal]);
     });
     dists = dists.sort((a, b) => {
