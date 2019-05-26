@@ -71,7 +71,7 @@ class View {
     this.clear();
     let minZ = 1;
 
-    let [vertices, faces] = world.polys;
+    let [vertices, shapeNums, faces] = world.polys;
 
     // translate to eye's location
     let s = new Shape({vertices, faces});
@@ -83,7 +83,10 @@ class View {
     // sort em into list of [index, distance, normal]
     let dists = [];
     faces.forEach((face, num) => {
-      const poly = new Poly(face[0].map(i => vertices[i]), world.shapes[face[1]].polyOptions);
+      const poly = new Poly(
+        face.map(i => vertices[i]),
+        world.shapes[shapeNums[face[0]]].polyOptions
+      );
       const normal = poly.normal();
       let toEye = poly.CoM.scale(-1);
       if(poly.minZ > minZ && normal.dot(toEye) > 0)
@@ -98,8 +101,8 @@ class View {
     // render em
     dists.forEach(item => {
       const num = item[0];
-      const face = faces[num][0];
-      const shape = world.shapes[faces[num][1]];
+      const face = faces[num];
+      const shape = world.shapes[shapeNums[face[0]]];
       const normal = item[2];
 
       let color = shape.color;

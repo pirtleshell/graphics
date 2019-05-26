@@ -12,16 +12,20 @@ class World {
     let vertIndexOffset = 0;
     let vertices = [];
     let faces = [];
+    let shapeNums = [];
     this.shapes.forEach((shape, shapeNum) => {
       // add vertices to full list
-      vertices = vertices.concat(shape.vertices);
-      // offset faces to proper index and return as [vertIndices, shapeNum]
+      shape.vertices.forEach(vertex => {
+        vertices.push(vertex);
+        shapeNums.push(shapeNum);
+      });
+      // offset faces to new collated index
       faces = faces.concat(shape.faces.map(indices => (
-        [indices.map(i => i+vertIndexOffset), shapeNum]
+        indices.map(i => i+vertIndexOffset)
       )));
       vertIndexOffset += shape.vertices.length;
     });
-    return [vertices, faces];
+    return [vertices, shapeNums, faces];
   }
 
   add(shape) {
