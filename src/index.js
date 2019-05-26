@@ -19,16 +19,19 @@ function init() {
   const world = new World();
   setupObjects(world);
 
-  const view = new View(container, [0, 0, 5], {
+  const view = new View(container, [0, 0, 0], {
     clearFunc: ctx => {
       ctx.drawImage(stars, 0, 0, ctx.canvas.width, ctx.canvas.height)
     },
     postDraw: drawStuff,
+    // focus: [0, 0, 0],
   });
 
   // view.draw(world);
   view.animate(world, 360*3);
   setupKeyboardInput(world, view);
+
+  console.log(view);
 }
 
 function setupObjects(world) {

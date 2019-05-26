@@ -13,7 +13,11 @@ class View {
     this.options = Object.assign({
       clearFunc: null,
       postDraw: null,
+      focus: null, // straight down z-axis
     }, options);
+
+    if(this.options.focus)
+      this.options.focus = new Vector3(this.options.focus);
 
     this.canvas = this.getCanvas();
     this.resizeCanvas();
@@ -33,7 +37,7 @@ class View {
       world.shapes.forEach(shape => {
         if(shape.onAnimate)
           shape.onAnimate(shape, world);
-      })
+      });
       this.clear();
       this.draw(world);
       if (currStep++ < maxSteps)
@@ -50,6 +54,19 @@ class View {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
+  eyePerspectiveMovement() {
+    const m = new Movement();
+    // translate view to eye's position
+    m.translate(this.eye.scale(-1));
+
+    // TODO: rotate camera to view focus point.
+    // should also accept and up vector
+    // if(this.options.focus) {
+    //
+    // }
+    return m;
+  }
+
   draw(world) {
     this.clear();
     let minZ = 1;
@@ -58,12 +75,12 @@ class View {
 
     // translate to eye's location
     let s = new Shape({vertices, faces});
-    const m = new Movement().translate(this.eye.scale(-1));
+    const m = this.eyePerspectiveMovement();
     s.move(m);
     vertices = s.vertices;
 
     const projected = vertices.map(this.projection);
-    // sort em
+    // sort em into list of [index, distance]
     let dists = [];
     faces.forEach((face, num) => {
       const poly = new Poly(face[0].map(i => vertices[i]), world.shapes[face[1]].polyOptions);
