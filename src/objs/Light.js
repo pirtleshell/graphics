@@ -1,4 +1,5 @@
 
+import Color from './Color';
 import Vector3 from './Vector3';
 
 class Light extends Vector3 {
@@ -10,6 +11,9 @@ class Light extends Vector3 {
   }
 
   calcColor(position, unitNormal, color) {
+    color = new Color(color);
+    position = new Vector3(position);
+
     let diffuse, specular;
     const light = position.to(this).direction();
     const eye = position.to(new Vector3(0, 0, 0)).direction();

@@ -1,26 +1,29 @@
 
 import Color from './Color';
-import Poly3d from './Poly3d';
+import Poly from './Poly';
 import Movement from './Movement';
+import Vector3 from './Vector3';
 
 class Shape {
   constructor(spec) {
     this.faces = spec.faces;
     this.vertices = spec.vertices;
+    // this.vertices = spec.vertices.map(v => new Vector3(v));
     this.movement = new Movement();
+    // this.normals = this.calcNormals();
 
     this.onAnimate = null;
 
     this.polyOptions = {
       color: new Color(255, 255, 255),
+      color: new Color(0, 0, 0),
       isFilled: true,
+      strokeColor: null,
     };
-
-    this.draw = this.draw.bind(this);
   }
 
   get color() { return this.polyOptions.color; }
-  set color(c) { this.polyOptions.color = new Color(c); }
+  set color(c) { this.polyOptions.color = c === null ? null : new Color(c); }
   get isFilled() { return this.polyOptions.isFilled; }
   set isFilled(f) { this.polyOptions.isFilled = f;}
   get strokeColor() { return this.polyOptions.strokeColor; }
@@ -32,16 +35,10 @@ class Shape {
   get numPoints() { return this.vertices.length; }
   get numPolys() { return this.faces.length; }
 
-  get sortedPolys() {
+  get polys() {
     return this.faces.map(face => {
       const vertices = face.map(i => this.vertices[i]);
-      return new Poly3d(vertices, this.polyOptions);
-    }).sort((a, b) => {
-      if (a.dist > b.dist)
-        return -1;
-      else if (a.dist < b.dist)
-        return 1;
-      return 0;
+      return new Poly(vertices, this.polyOptions);
     });
   }
 
@@ -64,10 +61,6 @@ class Shape {
     return out;
   }
 
-  draw(ctx) {
-    this.sortedPolys.forEach(poly => poly.draw(ctx));
-  }
-
   move(movement) {
     const m = movement.move;
     const numPoints = this.numPoints;
@@ -80,7 +73,6 @@ class Shape {
         this.vertices[i][c] = x*m[c][0] + y*m[c][1] + z*m[c][2] + m[c][3];
       }
     }
-
     this.movement.applyMovement(movement);
   }
 

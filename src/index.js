@@ -26,7 +26,7 @@ function init() {
     postDraw: drawStuff,
   });
 
-  // world.draw();
+  // view.draw(world);
   view.animate(world, 360*3);
 }
 

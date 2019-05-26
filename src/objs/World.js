@@ -8,30 +8,20 @@ class World {
 
   get numShapes() { return this.shapes.length; }
 
-  get sortedPolys() {
-    const polys = this.shapes.map(shape => shape.sortedPolys);
-    let sortedPolys = [];
-
-    const mergeSortedPolyLists = (A, B) => {
-      const out = [];
-      const size = A.length + B.length;
-      let [a, b] = [0, 0];
-      for (var i = 0; i < size; i++) {
-        if(a == A.length) return out.concat(B.slice(b));
-        if(b == B.length) return out.concat(A.slice(a));
-
-        if(A[a].dist >= B[b].dist)
-          out.push(A[a++]);
-        else
-          out.push(B[b++]);
-      }
-      return out;
-    }
-    polys.forEach((p, i) => {
-      sortedPolys = mergeSortedPolyLists(sortedPolys, p);
+  get polys() {
+    let vertIndexOffset = 0;
+    let vertices = [];
+    let faces = [];
+    this.shapes.forEach((shape, shapeNum) => {
+      // add vertices to full list
+      vertices = vertices.concat(shape.vertices);
+      // offset faces to proper index and return as [vertIndices, shapeNum]
+      faces = faces.concat(shape.faces.map(indices => (
+        [indices.map(i => i+vertIndexOffset), shapeNum]
+      )));
+      vertIndexOffset += shape.vertices.length;
     });
-
-    return sortedPolys;
+    return [vertices, faces];
   }
 
   add(shape) {
