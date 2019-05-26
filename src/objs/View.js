@@ -1,11 +1,13 @@
 
-import Vector3 from './Vector3';
+import Movement from './Movement';
 import Poly from './Poly';
+import Shape from './Shape';
+import Vector3 from './Vector3';
 
 class View {
-  constructor(displayDiv, position, options) {
+  constructor(displayDiv, eyePosition, options) {
     this.container = displayDiv;
-    this.position = new Vector3(position);
+    this.eye = new Vector3(eyePosition);
     this.fov = Math.tan(Math.PI / 4);
 
     this.options = Object.assign({
@@ -51,14 +53,22 @@ class View {
   draw(world) {
     this.clear();
     let minZ = 1;
-    const [vertices, faces] = world.polys;
+
+    let [vertices, faces] = world.polys;
+
+    // translate to eye's location
+    let s = new Shape({vertices, faces});
+    const m = new Movement().translate(this.eye.scale(-1));
+    s.move(m);
+    vertices = s.vertices;
+
     const projected = vertices.map(this.projection);
     // sort em
     let dists = [];
     faces.forEach((face, num) => {
       const poly = new Poly(face[0].map(i => vertices[i]), world.shapes[face[1]].polyOptions);
       const normal = poly.normal();
-      if(poly.dist > minZ)
+      if(poly.minZ > minZ)
         dists.push([num, poly.dist, normal]);
     });
     dists = dists.sort((a, b) => {
@@ -74,32 +84,36 @@ class View {
       const shape = world.shapes[faces[num][1]];
       const normal = item[2];
 
-      this.ctx.beginPath();
-      this.ctx.moveTo(projected[face[0]][0], projected[face[0]][1]);
-      face.slice(1, face.length).forEach(vi => {
-        const vertex = projected[vi];
-        this.ctx.lineTo(vertex[0], vertex[1]);
-      });
-      this.ctx.closePath();
-
       let color = shape.color;
       if(world.light != null) {
         color = world.light.calcColor(
-          vertices[face[0]], normal, color
+          this, vertices[face[0]], normal, color
         );
       }
-
-      this.fillStyle = color.hexStr;
-      this.strokeStyle = shape.strokeColor;
-
-      if(shape.isFilled)
-        this.ctx.fill();
-      if(shape.strokeColor)
-        this.ctx.stroke();
+      this.drawPoly2d(face.map(i => projected[i]), normal, color.hexStr, shape);
     });
+
+    s.move(m, 1);
 
     if(this.options.postDraw)
       this.options.postDraw(this.ctx);
+  }
+
+  drawPoly2d(vertices, normal, color, shape) {
+    this.ctx.beginPath();
+    this.ctx.moveTo(vertices[0][0], vertices[0][1]);
+    vertices.forEach(vertex => {
+      this.ctx.lineTo(vertex[0], vertex[1]);
+    });
+    this.ctx.closePath();
+
+    this.fillStyle = color;
+    this.strokeStyle = shape.strokeColor;
+
+    if(shape.isFilled)
+      this.ctx.fill();
+    if(shape.strokeColor)
+      this.ctx.stroke();
   }
 
   drawVec(v, pos, color) {

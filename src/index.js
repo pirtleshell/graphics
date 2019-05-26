@@ -19,7 +19,7 @@ function init() {
   const world = new World();
   setupObjects(world);
 
-  const view = new View(container, [0, 0, 0], {
+  const view = new View(container, [0, 0, 5], {
     clearFunc: ctx => {
       ctx.drawImage(stars, 0, 0, ctx.canvas.width, ctx.canvas.height)
     },
@@ -28,6 +28,7 @@ function init() {
 
   // view.draw(world);
   view.animate(world, 360*3);
+  setupKeyboardInput(world, view);
 }
 
 function setupObjects(world) {
@@ -86,22 +87,22 @@ function setupObjects(world) {
   obj.move(move);
   world.add(obj);
 
-  // obj = new Shape(stegosaurus());
-  // obj.inverted = true;
-  // obj.color = '#5e9';
-  // obj.onAnimate = o => {
-  //   const trans = o.untranslate(1);
-  //   o.move(rotateY);
-  //   o.move(trans);
-  // };
-  // move = new Movement()
-  //   .scale(3, 3, 3)
-  //   .rotateX(Math.cos(-90*deg), Math.sin(-90*deg))
-  //   .rotateZ(Math.cos(-12*deg), Math.sin(-12*deg))
-  //   .rotateY(0, -1)
-    // .translate(0, 20, 40);
-  // obj.move(move);
-  // world.add(obj);
+  obj = new Shape(stegosaurus());
+  obj.inverted = true;
+  obj.color = '#5e9';
+  obj.onAnimate = o => {
+    const trans = o.untranslate(1);
+    o.move(rotateY);
+    o.move(trans);
+  };
+  move = new Movement()
+    .scale(3, 3, 3)
+    .rotateX(Math.cos(-90*deg), Math.sin(-90*deg))
+    .rotateZ(Math.cos(-12*deg), Math.sin(-12*deg))
+    .rotateY(0, -1)
+    .translate(0, 20, 40);
+  obj.move(move);
+  world.add(obj);
 
   console.log(world);
 }
@@ -116,6 +117,25 @@ function drawStuff(ctx) {
   const str = 'Doing some graphics!'
   ctx.fillText(str, 10, 50);
   ctx.strokeText(str, 10, 50);
+}
+
+function setupKeyboardInput(world, view) {
+  window.addEventListener('keydown', function(e) {
+    let m = new Movement();
+    switch (e.key) {
+      case 'ArrowUp':
+        m.translateZ(-1);
+        break;
+      case 'ArrowDown':
+        m.translateZ(1);
+        break;
+      default:
+    }
+    world.shapes.forEach(shape => {
+      shape.move(m);
+    });
+    view.draw(world)
+  })
 }
 
 window.onload = init;

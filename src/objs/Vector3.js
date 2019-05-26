@@ -22,6 +22,8 @@ class Vector3 {
 
     this.z = z;
     this[2] = z;
+
+    this.length = 3;
   }
 
   // returns unit vector of direction

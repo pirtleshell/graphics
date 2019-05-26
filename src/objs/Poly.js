@@ -14,26 +14,17 @@ class Poly {
       strokeColor: null,
     };
     this.options = Object.assign(defaultOptions, options);
-    this.vertices = vertices.map(v => new Vector3(v));
+    this.vertices = [];
+    this.minZ = Infinity;
+    vertices.forEach(v => {
+      this.vertices.push(new Vector3(v));
+      if(v[2] < this.minZ) this.minZ = v[2];
+    });
 
-    const CoM = this.calcCenterOfMass();
-    this.dist = CoM.magnitude();
+    this.CoM = this.calcCenterOfMass();
   }
 
-  // get center() {
-  //   let extrema = [
-  //     [Infinity, -Infinity],
-  //     [Infinity, -Infinity],
-  //     [Infinity, -Infinity]
-  //   ];
-  //   this.vertices.forEach(v => {
-  //     for (var i = 0; i < 3; i++) {
-  //       if (v[i] < extrema[i][0]) extrema[i][0] = v[i];
-  //       if (v[i] > extrema[i][1]) extrema[i][1] = v[i];
-  //     }
-  //   });
-  //   return new Vector3(extrema.map(e => ((e[1]-e[0])/2)));
-  // }
+  get dist() { return this.CoM.magnitude(); }
 
   get color() { return this.options.color; }
   set color(c) { this.options.color = new Color(c);}

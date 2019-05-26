@@ -48,7 +48,7 @@ class Movement {
     let trans = this.identity();
     let transinv = this.identity();
 
-    if(Array.isArray(dx) && dx.length == 3) {
+    if(dx.length == 3) {
       dy = dx[1];
       dz = dx[2];
       dx = dx[0];

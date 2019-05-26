@@ -61,8 +61,10 @@ class Shape {
     return out;
   }
 
-  move(movement) {
-    const m = movement.move;
+  move(movement, inverse) {
+    let m = movement.move;
+    if(inverse)
+      m = movement.inv;
     const numPoints = this.numPoints;
     for(let i = 0; i < numPoints; i++) {
       let x = this.vertices[i][0];
