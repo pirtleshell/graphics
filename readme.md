@@ -1,8 +1,10 @@
 # graphics
 
+![look at that dinosaur!](screenshot.png)
+
 See a live demo [here](https://robert.pirtle.xyz/graphics-demo/).
 
-I made this mostly just to play with 3D graphics math. Why? Because this is the most hands-on linear algebra can be! A [custom webpack loader](https://github.com/pirtleshell/graphics/blob/master/polyLoader.js) loads [files of vertices and faces](https://github.com/pirtleshell/graphics/tree/master/src/data) then renders the polygons in 3D space.
+I made this mostly just to play with 3D graphics math. Why? Because this is the most hands-on linear algebra can be! A [custom webpack loader](polyLoader.js) loads [files of vertices and faces](src/data) then renders the polygons in 3D space.
 
 It is all rendered in real time _on your CPU_! There's a branch I started on that uses fancy webGL shaders to render on your GPU, but I stopped work on it. Maybe someday?
 
