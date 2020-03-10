@@ -9,7 +9,7 @@ body,
   background-color: #000;
 }
 
-img {
+#stars {
   display: none;
   visibility: collapse;
 }
