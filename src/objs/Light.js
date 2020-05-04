@@ -10,28 +10,21 @@ class Light extends Vector3 {
     this.specularPower = 70;
   }
 
-  calcColor(eyePosition, position, unitNormal, color) {
-    color = new Color(color);
-    position = new Vector3(position);
+  calcColor(eyePosition, positionIn, unitNormal, colorIn) {
+    const color = new Color(colorIn);
+    const position = new Vector3(positionIn);
 
-    let diffuse, specular;
     const light = position.to(this).direction();
     const eye = position.to(eyePosition).direction();
 
     const alpha = unitNormal.dot(light);
-    if (alpha > 0)
-      diffuse = alpha * this.diffusion;
-    else
-      diffuse = 0;
+    const diffuse = alpha > 0 ? alpha * this.diffusion : 0;
 
     const r =  light.to(unitNormal.scale(2*alpha));
     const beta = eye.dot(r);
-    if (beta > 0)
-      specular = Math.pow(beta, this.specularPower);
-    else
-      specular = 0;
+    const specular = beta > 0 ? Math.pow(beta, this.specularPower) : 0;
 
-    const intensity = this.ambient + diffuse + (1 - this.ambient - this.diffusion)*specular;
+    const intensity = this.ambient + diffuse + (1 - this.ambient - this.diffusion) * specular;
     return color.scale(intensity);
   }
 }

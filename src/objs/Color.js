@@ -2,7 +2,8 @@
 import Vector3 from './Vector3';
 
 class Color extends Vector3 {
-  constructor(r, g, b) {
+  constructor(rIn, gIn, bIn) {
+    let [r, g, b] = [rIn, gIn, bIn];
     if (typeof r === 'string' && r[0] === '#') {
       if (r.length === 4) {
         g = parseInt(r[2], 16) / 15;
