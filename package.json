@@ -5,6 +5,7 @@
   "author": "Robert Pirtle",
   "license": "MIT",
   "scripts": {
+    "build": "webpack --mode production --output ./public/index.js",
     "clean": "rm -fr public/",
     "dev": "webpack --mode development --output ./public/index.js"
   },
