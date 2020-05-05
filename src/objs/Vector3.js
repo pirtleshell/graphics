@@ -1,17 +1,18 @@
 
 class Vector3 {
-  constructor(x, y, z) {
+  constructor(xi, yi, zi) {
+    let [x, y, z] = [xi, yi, zi];
     if(Array.isArray(x)) {
-      if(x.length !== 3)
-        throw `Vector3 expects an array of length 3, got ${x.length}.`;
-      y = x[1];
-      z = x[2];
-      x = x[0];
+      if(xi.length !== 3)
+        throw `Vector3 expects an array of length 3, got ${xi.length}.`;
+      x = xi[0];
+      y = xi[1];
+      z = xi[2];
     }
-    else if(x.constructor.name === 'Vector3') {
-      y = x.y;
-      z = x.z;
-      x = x.x;
+    else if(xi.constructor.name === 'Vector3') {
+      x = xi.x;
+      y = xi.y;
+      z = xi.z;
     }
 
     this.x = x;
@@ -29,6 +30,10 @@ class Vector3 {
   // returns unit vector of direction
   direction() {
     const magnitude = this.magnitude();
+    if (magnitude === 0) {
+      // TODO: ???
+      return new Vector3(0, 0, 0);
+    }
     return new Vector3(
       this.x / magnitude,
       this.y / magnitude,

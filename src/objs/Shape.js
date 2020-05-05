@@ -15,7 +15,6 @@ class Shape {
     this.onAnimate = null;
 
     this.polyOptions = {
-      color: new Color(255, 255, 255),
       color: new Color(0, 0, 0),
       isFilled: true,
       strokeColor: null,

@@ -111,7 +111,7 @@ class View {
           this, vertices[face[0]], normal, color
         );
       }
-      this.drawPoly2d(face.map(i => projected[i]), normal, color.hexStr, shape);
+      this.drawPoly2d(face.map(i => projected[i]), color.hexStr, shape);
     });
 
     s.move(m, 1);
@@ -120,7 +120,7 @@ class View {
       this.options.postDraw(this.ctx);
   }
 
-  drawPoly2d(vertices, normal, color, shape) {
+  drawPoly2d(vertices, color, shape) {
     this.ctx.beginPath();
     this.ctx.moveTo(vertices[0][0], vertices[0][1]);
     vertices.forEach(vertex => {
