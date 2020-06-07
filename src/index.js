@@ -1,13 +1,11 @@
 'use strict';
 
-import Color from './objs/Color';
 import Movement from './objs/Movement';
 import Light from './objs/Light';
 import Shape from './objs/Shape';
 import View from './objs/View';
 import World from './objs/World';
 
-import diamond from './data/diamond.xyz';
 import sphere from './data/sphere.xyz';
 import stegosaurus from './data/stegosaurus.xyz';
 import torus from './data/torus.xyz';

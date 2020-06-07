@@ -5,9 +5,9 @@
   "author": "Robert Pirtle",
   "license": "MIT",
   "scripts": {
-    "build": "webpack --mode production --output ./public/index.js",
+    "build": "webpack --output ./public/index.js",
     "clean": "rm -fr public/",
-    "dev": "webpack --mode development --output ./public/index.js"
+    "dev": "webpack-dev-server"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",
@@ -17,6 +17,7 @@
     "html-webpack-plugin": "^3.2.0",
     "style-loader": "^1.1.3",
     "webpack": "^4.42.0",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0"
   }
 }

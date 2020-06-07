@@ -27,6 +27,6 @@ class Light extends Vector3 {
     const intensity = this.ambient + diffuse + (1 - this.ambient - this.diffusion) * specular;
     return color.scale(intensity);
   }
-}
+};
 
 export default Light;

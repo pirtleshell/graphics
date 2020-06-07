@@ -27,7 +27,7 @@ function readPolys(content) {
       faces = faces.concat(trianglify(face));
   }
 
-  return `module.exports = () => (${JSON.stringify({vertices, faces})})`;
+  return `module.exports = () => (${JSON.stringify({vertices, faces})});`;
 }
 
 // take a poly of >3 sides and convert it into subtriangles

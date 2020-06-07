@@ -32,6 +32,6 @@ class World {
     this.shapes.push(shape);
     this.numPolys += shape.numPolys;
   }
-}
+};
 
 export default World;

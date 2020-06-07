@@ -161,6 +161,6 @@ class Movement {
 
     return this;
   }
-}
+};
 
-module.exports = Movement;
+export default Movement;

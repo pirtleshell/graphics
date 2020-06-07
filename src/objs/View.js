@@ -212,6 +212,6 @@ class View {
     this.canvas.width = rect.width;
     this.canvas.height = rect.height;
   }
-}
+};
 
 export default View;
