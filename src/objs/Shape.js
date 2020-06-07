@@ -2,7 +2,6 @@
 import Color from './Color';
 import Poly from './Poly';
 import Movement from './Movement';
-import Vector3 from './Vector3';
 
 class Shape {
   constructor(spec) {
@@ -83,6 +82,6 @@ class Shape {
     this.move(new Movement(trans.inv, trans.move));
     return trans;
   }
-};
+}
 
 export default Shape;

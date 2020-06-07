@@ -1,3 +1,4 @@
+/* eslint no-console: 0 */
 'use strict';
 
 import Movement from './objs/Movement';
@@ -19,7 +20,7 @@ function init() {
 
   const view = new View(container, [0, 0, 0], {
     clearFunc: ctx => {
-      ctx.drawImage(stars, 0, 0, ctx.canvas.width, ctx.canvas.height)
+      ctx.drawImage(stars, 0, 0, ctx.canvas.width, ctx.canvas.height);
     },
     postDraw: drawStuff,
     // focus: [0, 0, 0],
@@ -115,7 +116,7 @@ function drawStuff(ctx) {
   gradient.addColorStop(1, '#fff');
   ctx.strokeStyle = gradient;
   ctx.font = '48px serif';
-  const str = 'Doing some graphics!'
+  const str = 'Doing some graphics!';
   ctx.fillText(str, 10, 50);
   ctx.strokeText(str, 10, 50);
 }
@@ -135,8 +136,8 @@ function setupKeyboardInput(world, view) {
     world.shapes.forEach(shape => {
       shape.move(m);
     });
-    view.draw(world)
-  })
+    view.draw(world);
+  });
 }
 
 window.onload = init;

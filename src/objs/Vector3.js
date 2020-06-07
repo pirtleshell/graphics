@@ -77,6 +77,6 @@ class Vector3 {
       target.z - this.z
     );
   }
-};
+}
 
 export default Vector3;

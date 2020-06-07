@@ -62,7 +62,7 @@ class Movement {
     transinv[1][3] = -dy;
     transinv[2][3] = -dz;
 
-    this.applyMatrix(trans, transinv)
+    this.applyMatrix(trans, transinv);
 
     return this;
   }
@@ -89,7 +89,7 @@ class Movement {
     scaleinv[1][1] = -sy;
     scaleinv[2][2] = -sz;
 
-    this.applyMatrix(scale, scaleinv)
+    this.applyMatrix(scale, scaleinv);
 
     return this;
   }
@@ -161,6 +161,6 @@ class Movement {
 
     return this;
   }
-};
+}
 
 export default Movement;

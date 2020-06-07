@@ -36,6 +36,6 @@ class Color extends Vector3 {
       parseInt(this[1] * 255).toString(16).padStart(2, '0') +
       parseInt(this[2] * 255).toString(16).padStart(2, '0');
   }
-};
+}
 
 export default Color;

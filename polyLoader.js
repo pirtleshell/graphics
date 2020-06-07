@@ -16,7 +16,7 @@ function readPolys(content) {
   }
 
   const numFaces = parseInt(lines[numPoints + 1]);
-  let faces = []
+  let faces = [];
   for (let i = 0; i < numFaces; i++) {
     let face = lines[numPoints + i + 2].split(',').map(p => parseInt(p));
     if(face.length < 3)

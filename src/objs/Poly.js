@@ -52,6 +52,6 @@ class Poly {
       return unit.scale(-1);
     return unit;
   }
-};
+}
 
 export default Poly;
